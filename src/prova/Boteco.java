@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- *
  * @author angeloluz
  */
 public class Boteco {
@@ -19,12 +18,19 @@ public class Boteco {
     private double caixa;
     private Scanner teclado;
 
+    /**
+     * Construtor para um novo Boteco
+     * Inicializa as variaveis.
+     */
     public Boteco() {
         produtos = new ArrayList();
         teclado = new Scanner(System.in);
         caixa = 1000.00;
     }
 
+    /**
+     * Interface do Boteco no console
+     */
     public void init() {
         int var = 0;
         while (var != 9) {
@@ -49,30 +55,7 @@ public class Boteco {
                     listarProdutosPorNome(nome);
                     break;
                 case 3:
-                    System.out.println("===== Cadastro de Venda ======");
-                    listarProdutosCadastros();
-
-                    while (true) {
-                        System.out.println("Digite o código do produto: ");
-                        int cod = teclado.nextInt();
-                        Produto p = produtos.get(cod - 1);
-                        System.out.println(p);
-                        System.out.print("Digite a quantidade: ");
-                        int quantidade = teclado.nextInt();
-                        if (!p.baixarDoEstoque(quantidade)) {
-                            System.out.println("Produto ou quantidade indisponível");
-                        } else {
-                            System.out.printf("%s - R$ %.2f x %d = %.2f\n", p.getNome(), p.getValorDeVenda(), quantidade,
-                                    (quantidade * p.getValorDeVenda()));
-                            caixa += quantidade * p.getValorDeVenda();
-                        }
-                        teclado.nextLine();
-                        System.out.println("Tecle 'F' para finalizar ou <Enter> para continuar vendendo");
-                        String cont = teclado.nextLine();
-                        if (cont.equals("F")) {
-                            break;
-                        }
-                    }
+                    realizarVenda();
                     break;
                 case 4:
                     listarProdutosCadastros();
@@ -88,6 +71,9 @@ public class Boteco {
         }
     }
 
+    /**
+     * Processo para adicionar um novo produto com interface no console
+     */
     public void adicionarProduto() {
         String marca;
         String nome;
@@ -129,8 +115,12 @@ public class Boteco {
         }
     }
 
+    /**
+     * Lista todos os produtos que tenho o nome igual ao parametro nome
+     *
+     * @param nome
+     */
     private void listarProdutosPorNome(String nome) {
-
         int codigo = 1;
         int reg = 0;
         for (Produto produto : produtos) {
@@ -145,6 +135,9 @@ public class Boteco {
         }
     }
 
+    /**
+     * Lista todos produtos
+     */
     private void listarProdutosCadastros() {
         if (produtos.isEmpty()) {
             System.out.println("Ainda não há produtos cadastrados");
@@ -157,6 +150,14 @@ public class Boteco {
         }
     }
 
+    /**
+     * Verifica se produto já está cadastrado
+     *
+     * @param nome
+     * @param marca
+     * @param volume
+     * @return boolean
+     */
     private boolean isCadastrado(String nome, String marca, int volume) {
         for (Produto produto : produtos) {
             if ((nome.equals(produto.getNome()))
@@ -168,6 +169,15 @@ public class Boteco {
         return false;
     }
 
+    /**
+     * Pesquisa produtos através dos parametros passados e retorna o mesmo
+     * Caso não ache retorna null
+     *
+     * @param nome
+     * @param marca
+     * @param volume
+     * @return Produto
+     */
     private Produto getProdutoCadastrado(String nome, String marca, int volume) {
         for (Produto produto : produtos) {
             if ((nome.equals(produto.getNome()))
@@ -179,4 +189,33 @@ public class Boteco {
         return null;
     }
 
+    /**
+     * Processo para realizar uma venda com interface no console
+     */
+    private void realizarVenda() {
+        System.out.println("===== Cadastro de Venda ======");
+        listarProdutosCadastros();
+
+        while (true) {
+            System.out.println("Digite o código do produto: ");
+            int cod = teclado.nextInt();
+            Produto p = produtos.get(cod - 1);
+            System.out.println(p);
+            System.out.print("Digite a quantidade: ");
+            int quantidade = teclado.nextInt();
+            if (!p.baixarDoEstoque(quantidade)) {
+                System.out.println("Produto ou quantidade indisponível");
+            } else {
+                System.out.printf("%s - R$ %.2f x %d = %.2f\n", p.getNome(), p.getValorDeVenda(), quantidade,
+                        (quantidade * p.getValorDeVenda()));
+                caixa += quantidade * p.getValorDeVenda();
+            }
+            teclado.nextLine();
+            System.out.println("Tecle 'F' para finalizar ou <Enter> para continuar vendendo");
+            String cont = teclado.nextLine();
+            if (cont.equals("F")) {
+                break;
+            }
+        }
+    }
 }
