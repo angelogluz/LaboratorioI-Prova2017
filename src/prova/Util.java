@@ -13,7 +13,11 @@ import java.util.logging.Logger;
  * @author angeloluz
  */
 public class Util {
-    
+    /**
+     * Simula carregamento
+     * @param mensagem String
+     * @param tempo long
+     */
     public static void load(String mensagem, long tempo) {
         try {
             System.out.print(mensagem);
